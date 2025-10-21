@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: base_sql_server_dbo__promos
+    description: >
+      Add Hash like promo_id with the goal that not use the promo name for the joins.
+    columns:
+      - name: promo_id
+        description: >
+          Each unique promocode on platform (Hash).
+        tests:
+          - not_null
+          - unique
+          - relationships:
+                to: ref('base_sql_server_dbo__orders')
+                field: promo_id
+      - name: name_promo
+        description: >
+          Promocode on platform.
+        tests:
+          - not_null
+          - unique       
+      - name: total_discount_usd
+        description: >
+          Absolute dollar amount that is given off with the code.
+        tests:
+          - not_null
+          - positive_values
+      - name: status_promo
+        description: >
+          Is the promo code active or disabled.
+        tests:
+          - not_null
+          - accepted_values:
+                    values: ['inactive','active']
+      - name: date_load
+        description: >
+          Date that the data was loaded.
+        tests:
+          - not_null
+
+  - name: base_sql_server_dbo__orders
+    description: >
+      Data about all orders in demo.
+    columns:
+      - name: order_id
+        description: >
+          UUID for each unique order on platform.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+                to: ref('stg_sql_server_dbo__order_items')
+                field: order_id 
+      - name: user_id
+        description: >
+          UserId of the user that placed this order.
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_sql_server_dbo__users')
+                field: user_id
+      - name: promo_id
+        description: >
+          PromoId if any was used in the order.
+      - name: address_id
+        description: >
+          Delivery address for this order.
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_sql_server_dbo__addresses')
+                field: address_id 
+      - name: created_at
+        description: >
+          Timestamp when the order was created.
+        tests:
+          - not_null
+      - name: order_cost
+        description: >
+          Dollar about of the items in the order ($).
+        tests:
+          - not_null
+          - positive_values
+      - name: shipping_cost
+        description: >
+          Cost of shipping for the order ($).
+        tests:
+          - not_null
+          - positive_values
+      - name: order_total
+        description: >
+          Total cost of the order including shipping ($).
+        tests:
+          - not_null
+          - positive_values
+      - name: tracking_id
+        description: >
+          Tracking number for the order/package.
+      - name: shipping_service
+        description: >
+          Company that was used for shipping.
+      - name: estimated_delivery_at
+        description: >
+          Estimated date of delivery (UTC).
+      - name: delivered_at_utc
+        description: >
+          Actual timestamp of delivery (UTC).
+      - name: status
+        description: >
+          Status of the order.
+        tests:
+          - not_null
+          - accepted_values:
+                values: ['shipped','preparing','delivered']
+      - name: _fivetran_synced
+        description: >
+          Date that the data was loaded.
+        tests:
+          - not_null

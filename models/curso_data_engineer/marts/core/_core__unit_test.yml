@@ -1,0 +1,99 @@
+unit_tests:
+  - name: test_is_valid_email
+    description: "Check if email is valid"
+    model: dim_users
+    given:
+      - input: ref('stg_sql_server_dbo__users')
+        rows:
+          - {correo: juan@hotmail.com}
+          - {correo: sdivers2p@msu.edu}
+          - {correo: wheinecke2l@ebay.com}
+          - {correo: fail_email}
+    expect:
+      rows:
+        - {email: juan@hotmail.com,    is_valid_email_address: true}
+        - {email: sdivers2p@msu.edu,    is_valid_email_address: true}
+        - {email: wheinecke2l@ebay.com,    is_valid_email_address: true}
+        - {email: fail_email,    is_valid_email_address: false}
+
+  - name: test_is_valid_name
+    description: "Check ifname  is valid"
+    model: dim_users
+    given:
+      - input: ref('stg_sql_server_dbo__users')
+        rows:
+          - {first_name: Juan}
+
+    expect:
+      rows:
+        - {first_name: Juan, is_valid_first_name: True}
+
+  - name: test_is_valid_email_with_csv_fixture
+    description: "Check if email is valid"
+    model: dim_users
+    given:
+      - input: ref('stg_sql_server_dbo__users')
+        format: csv
+        fixture: users_fixture
+
+    expect:
+      rows:
+        - {email: ekollaschek2q@tuttocitta.it,    is_valid_email_address: true}
+        - {email: sdivers2p@msu.edu,    is_valid_email_address: true}
+        - {email: wheinecke2l@ebay.com,    is_valid_email_address: true}
+        - {email: fail_email,    is_valid_email_address: false}
+
+  - name: test_is_valid_phone_with_csv_fixture
+    description: "Valida que un teléfono sea válido"
+    model: dim_users
+    given:
+      - input: ref('stg_sql_server_dbo__users')
+        rows:
+          - {phone_number: 666-111-1112}
+          - {phone_number: 957-603-4563}
+          - {phone_number: 957-603458}
+
+
+    expect:
+      rows:
+        - {phone_number: 666-111-1112,    is_valid_phone_number: true}
+        - {phone_number: 957-603-4563,    is_valid_phone_number: true}
+        - {phone_number: 957-603458,    is_valid_phone_number: false}         
+
+
+  - name: test_budget_incremental_mode_off
+    model: fct_budget_incremental
+    overrides:
+      macros:
+        # unit test this model in "full refresh" mode
+        is_incremental: false 
+    given:
+      - input: ref('stg_google_sheets__budget')
+        rows:
+          - {_row: 100, quantity: 100}
+    expect:
+      rows:
+        - {_row: 100, quantity: 100}
+
+  #- name: test_budget_incremental_mode_on
+  #  model: fct_budget_incremental
+  #  overrides:
+  #    macros:
+        # unit test this model in "incremental" mode
+  #      is_incremental: true 
+  #  given:
+  #    - input: ref('stg_google_sheets__budget')
+  #      rows:
+  #        - {_row: 1, quantity: 100}
+  #        - {_row: 2, quantity: 200}
+  #        - {_row: 3, quantity: 300}
+  #    - input: this 
+        # contents of current budget_incremental
+  #      rows:
+  #        - {_row: 1, quantity: 100}
+  #  expect:
+      # what will be inserted/merged into my_incremental_model
+  #    rows:
+  #      - {_row: 2, quantity: 200}
+  #      - {_row: 3, quantity: 300}
+             
