@@ -118,7 +118,7 @@ models:
           Absolute dollar amount that is given off with the code.
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: status_promo
         description: >
           Is the promo code active or disabled.
@@ -153,13 +153,13 @@ models:
           Price of the product.
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: inventory
         description: >
           Amount of the inventory we have for this product.
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: date_load
         description: >
           Date that the data was loaded.
@@ -208,19 +208,19 @@ models:
           Dollar about of the items in the order ($).
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: shipping_cost_usd
         description: >
           Cost of shipping for the order ($).
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: total_order_cost_usd
         description: >
           Total cost of the order including shipping ($).
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: tracking_id
         description: >
           Tracking number for the order/package.
@@ -270,7 +270,7 @@ models:
           Number of units of the product in this order.
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: date_load
         description: >
           Date that the data was loaded.

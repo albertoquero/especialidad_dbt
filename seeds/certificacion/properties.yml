@@ -1,0 +1,48 @@
+version: 2
+
+# Las configuraciones del properties.yml tienen preferencia antes que el dbt_project
+seeds:
+  - name: personas_cert
+    description: CSV preparacion certificacion PRUEBA WAREHOUSE
+    columns:
+      - name: NAME
+        description: nombre persona
+      - name: YEAR
+        description: edad persona
+      - name: INCOME
+        description: persona 
+      - name: EDUCATION
+        description: >
+          Campos que
+          indica la educación
+          de la persona   
+      - name: GRADUATION
+        description: "**[Read more](https://docs.getdbt.com/reference/resource-properties/description)**" 
+      - name: STANDING
+        description: '{{ doc("standing_bloc") }}'         
+    config:
+      #Propiedades propias
+      delimiter: ","
+      quote_columns: false
+      column_types: 
+        Name: string
+        Year: string
+        Income: string
+        Education: string
+        Graduation: string
+        Standing: string
+      #Propiedades comunes
+      enabled: true
+      alias: personas_properties_file
+      pre_hook: "SELECT 'ejecucion properties.yml pre_hook' consulta from dual;"
+      post_hook: "SELECT 'ejecucion properties.yml post_hook' consulta from dual;"
+      #database: "{{ env_var('DBT_DB_USER') }}_CERT_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB"   Este valor se coge antes que dbt_project
+      #schema: <string>  Este valor se coge antes que dbt_project
+      persist_docs:   #persiste información en el warehouse
+        relation: true
+        columns: true
+      #full_refresh: <boolean>
+      #meta: {<dictionary>}
+      #grants: {<dictionary>}
+      #event_time: my_time_field
+      

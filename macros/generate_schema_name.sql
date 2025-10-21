@@ -2,7 +2,7 @@
 
     {%- set default_schema = target.schema -%}
 
-    {%- if env_var('DBT_ENVIRONMENTS') in ['CI_CD'] or custom_schema_name is not none -%}
+    {%- if env_var('DBT_DB_USER') in ['CI_CD'] or custom_schema_name is not none -%}
 
         {{ custom_schema_name | trim }}
 

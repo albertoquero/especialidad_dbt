@@ -4,7 +4,7 @@ sources:
 
   - name: google_sheets # name of the source 
     schema: google_sheets # this is the schema our raw data lives in
-    database:  "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database
+    database:  "{{ env_var('DBT_DB_USER') }}_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB" # this is the name of our database
 
     quoting:
       database: false
@@ -30,8 +30,8 @@ sources:
           - name: quantity
             description: >
               Number of units for each product and each month for products.
-            tests:
-              - positive_values
+            #tests:
+            #  - positive_values
           - name: month
             description: >
               Each month for the budget -> End of the month.

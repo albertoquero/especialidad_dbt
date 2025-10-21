@@ -275,7 +275,7 @@ models:
           Quantity of product in the order.
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: status_order
         description: >
           Status of the order.

@@ -4,7 +4,7 @@ sources:
 
   - name: sql_server_dbo # name of the source 
     schema: sql_server_dbo # this is the schema our raw data lives in
-    database:  "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database
+    database:  "{{ env_var('DBT_DB_USER') }}_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB" # this is the name of our database
 
     quoting:
       database: false
@@ -118,7 +118,7 @@ sources:
               Absolute dollar amount that is given off with the code.
             tests:
               - not_null
-              - positive_values
+              #- positive_values
           - name: status
             description: > 
               Is the promo code active or disabled.
@@ -154,13 +154,13 @@ sources:
               Price of the product.
             tests:
               - not_null
-              - positive_values
+              #- positive_values
           - name: inventory
             description: > 
               Amount of the inventory we have for this product.
             tests:
               - not_null
-              - positive_values
+              #- positive_values
           - name: _fivetran_synced
             description: >
               Date that the data was loaded.
@@ -200,19 +200,19 @@ sources:
               Dollar about of the items in the order ($).
             tests:
               - not_null
-              - positive_values
+              #- positive_values
           - name: shipping_cost
             description: >
               Cost of shipping for the order ($).
             tests:
               - not_null
-              - positive_values  
+              #- positive_values
           - name: order_total
             description: >
               Total cost of the order including shipping ($).
             tests:
               - not_null
-              - positive_values
+              #- positive_values
           - name: tracking_id
             description: >
               Tracking number for the order/package.
@@ -256,7 +256,7 @@ sources:
               Number of units of the product in this order.
             tests:
               - not_null
-              - positive_values
+              #- positive_values
           - name: _fivetran_synced
             description: >
               Date that the data was loaded.

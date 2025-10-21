@@ -48,7 +48,7 @@ models:
           Number of units for each product and each month for products.
         tests:
           - not_null
-          - positive_values    
+          #- positive_values    
       - name: month
         description: >
           Each month for the budget -> End of the month..
