@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: stg_google_sheets_budget_versionado
+    versions:
+      - v: 1
+      - v: 2
+        columns:
+          - include: all
+            exclude: [quantity]
+    latest_version: 2 #Primera version
+    config:
+      materialized: table
+      contract:
+        enforced: true
+    description: >
+      Info about budget
+    columns:
+      - name: product_id
+        data_type: varchar
+      #- name: quantity
+      #  data_type: int
+      - name: month
+        data_type: date
+      - name: date_load
+        data_type: TIMESTAMP_TZ
+
+  - name: stg_google_sheets__budget
+    description: >
+      Data about budget in demo.
+    columns:
+      - name: _row
+        description: >
+         Number of each row from google sheet.
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: >
+         UUID for each unique product on platform.          
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_sql_server_dbo__products')
+                field: product_id  
+      - name: quantity
+        description: >
+          Number of units for each product and each month for products.
+        tests:
+          - not_null
+          - positive_values    
+      - name: month
+        description: >
+          Each month for the budget -> End of the month..
+        tests:
+          - not_null
+      - name: date_load
+        description: >
+          Date that the data was loaded.
+        tests:
+          - not_null
