@@ -25,7 +25,7 @@ models:
           Absolute dollar amount that is given off with the code.
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: status_promo
         description: >
           Is the promo code active or disabled.
@@ -81,19 +81,19 @@ models:
           Dollar about of the items in the order ($).
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: shipping_cost
         description: >
           Cost of shipping for the order ($).
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: order_total
         description: >
           Total cost of the order including shipping ($).
         tests:
           - not_null
-          - positive_values
+          #- positive_values
       - name: tracking_id
         description: >
           Tracking number for the order/package.

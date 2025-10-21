@@ -18,6 +18,7 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
 
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
@@ -38,32 +39,44 @@ vars:
 # continue to be built as views. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 seeds:
-  +database: "AQUERO_DEV_BRONZE_DB"
-  +schema: "SEEDS"
+  curso_data_eng:
+    curso_data_engineer:
+      +database: "{{ env_var('DBT_DB_USER') }}_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB" 
+      +schema: "SEEDS"
+      +tags: ['curso']
+    certificacion:
+      +database: "{{ env_var('DBT_DB_USER') }}_CERT_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB"  
+      +schema: "SEEDS"
+      +tags: ['cert']
+      +alias: persona_dbt_project_file
+      +pre_hook: "SELECT 'ejecucion dbt project.yml pre_hook' consulta from dual;" #Se ejecuta antes que el yml a nivel de seed y posteriormente a un paquete
+      +post_hook: "SELECT 'ejecucion dbt_project.yml post_hook' consulta from dual;"
+  
 
 models:
-  curso_data_eng:
+
+#  curso_data_eng:
     # Applies to all files under models/example/
-    staging:
-      +materialized: view
-      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
-      +tags: ['staging']
-      google_sheets:
-        +schema: google_sheets
-        +tags: ['google_sheets']
-      sql_server_dbo:
-        +schema: sql_server_dbo
-        +tags: ['sql_server_dbo']
-      example:
-        +tags: ['example']
-        +schema: example
-    marts:
-      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
-      +materialized: table
-      +tags: ['marts']
-      core:
-        +schema: core
-      marketing:
-        +schema: marketing
-      product:
-        +schema: product
+#    staging:
+#      +materialized: view
+#      +database: "{{ env_var('DBT_DB_USER') }}_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_SILVER_DB"
+#      +tags: ['staging']
+#      google_sheets:
+#        +schema: google_sheets
+#        +tags: ['google_sheets']
+#      sql_server_dbo:
+#        +schema: sql_server_dbo
+#        +tags: ['sql_server_dbo']
+#      example:
+#        +tags: ['example']
+#        +schema: example
+#    marts:
+#      +database: "{{ env_var('DBT_DB_USER') }}_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_GOLD_DB"
+#      +materialized: table
+#      +tags: ['marts']
+##      core:
+#        +schema: core
+#      marketing:
+#        +schema: marketing
+#      product:
+#        +schema: product
