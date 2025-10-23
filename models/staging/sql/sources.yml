@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: sql            # Nombre del esquema (ajústalo a tu caso real)
+    database: AQUERO_PRUEBAS_BRZ_DB      # Nombre de la base de datos en Snowflake
+    schema: SQL          # Esquema donde está tu tabla
+    tables:
+      - name: clientes   # Nombre de la tabla en Snowflake
+        description: "Tabla de clientes con datos de ejemplo"
+        columns:
+          - name: id_cliente
+            description: "Identificador único del cliente"
+            tests:
+              - not_null
+              - unique
+          - name: nombre
+            description: "Nombre del cliente"
+          - name: apellido
+            description: "Apellido del cliente"
+          - name: email
+            description: "Correo electrónico del cliente"
+            tests:
+              - not_null
+          - name: fecha_registro
+            description: "Fecha en que el cliente fue registrado"
