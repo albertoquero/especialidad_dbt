@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: google_sheets_cert  #Nombre del source. Ha de ser único y coincidir con el stg
+    description: Source del origen google_sheets
+    database: "{{ env_var('DBT_DB_USER') }}_CERT_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB"  #sino se pone coge la de configuracion silver
+    schema: google_sheets   #Por defecto coge el valor del name suponiendo que es el mismo. ha de coger la de google_sheets
+    loader: google #es mera documentacion para indicar quien carga
+    quoting: #para entrecomillar los datos si el datawarehouse lo ncesita
+      database: false
+      schema: false
+      identifier: false
+    config:
+      tags: ['cert'] 
+      freshness: # freshness a nivel de source, afecta a todas las tablas.
+        warn_after: {count: 1000, period: day}
+        error_after: {count: 2000, period: day}
+        filter: datediff('day',_FIVETRAN_SYNCED,current_timestamp)<2 #Se usa el filtro para coger menos informacion y ver el freshness
+      loaded_at_field: _FIVETRAN_SYNCED # Campo que indica por el cual hacer freshness  
+    tables:
+      - name: source_budget #Da igual si es minus o mayus con respecto al warehouse, pero no con respecto al fichero STG, ha de ser el mismo
+        description: Tabla budget
+        identifier: BUDGET #al compilar saldrá este nombre pero en el source hay que poner el del NAME ha de coincidir con base de datos
+        #data_tests:
+        columns:
+          - name: _ROW
+            description: Id de fila
+            data_tests:
+              - not_null
+              - unique
+          - name: QUANTITY
+          - name: MONTH
+          - name: PRODUCT_ID
+          - name: _FIVETRAN_SYNCED
+        #config:
+         #loaded_at_field: <column_name>
+         #freshness: #freshness a nivel de tabla
+            #warn_after: {count: 6, period: hour}
+            #error_after: {count: 12, period: hour}
+          #freshness: null # Si se pone null no hara el freshness
+        meta:
+          owner: "@Alberto"
+          model_maturity: en desarrollo
+          favorite_color: red
+        tags: ['cert_budget']
+        #quoting:
+        #  database: true | false
+        #  schema: true | false
+        #  identifier: true | false
+        #external: {<dictionary>} #es información de metadata de tablas externas
+        
