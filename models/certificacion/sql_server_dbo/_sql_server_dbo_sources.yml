@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: sql_server_dbo_cert
+    description: Source del origen sql server dbo
+    database: "{{ env_var('DBT_DB_USER') }}_CERT_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB"  
+    schema: sql_server_dbo   #Por defecto coge el valor del name suponiendo que es el mismo. ha de coger la de google_sheets
+    
+    config:
+      freshness: # default freshness
+        warn_after: {count: 12, period: hour}
+        error_after: {count: 24, period: hour}
+      loaded_at_field: _FIVETRAN_SYNCED # changed to config in v1.10
+    tables:
+      - name: adresses
+      - name: events
+      - name: orders
+      - name: order_items
+      - name: products
+      - name: promos
+      - name: users
+        #description:
+        #columns:
+        #  - name: 
+        #    description:
+        #    data_tests:
+        config:
+          freshness: # make this a little more strict
+            warn_after: {count: 6, period: hour}
+            error_after: {count: 1000, period: day}
+          #freshness: null # do not check freshness for this table
