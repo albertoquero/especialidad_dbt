@@ -33,6 +33,18 @@ on-run-start:
 vars:
   budget_date: '2024-10-01'
 
+#Configuracion de TESTs
+data_tests:
+  curso_data_eng:
+    certificacion:
+      +enabled: true
+      +schema: "SINGULAR_TEST_DBT_PROJECT"
+      +database: "{{ env_var('DBT_DB_USER') ~ '_CERT_' ~ env_var('DBT_ENVIRONMENTS_LAYER') ~ '_BRONZE_DB' }}"
+      +store_failures: true
+      #+severity: "error"
+    curso_data_engineer:
+      +enabled: false
+
 #Configuraciones de SEEDS
 seeds:
   curso_data_eng:
@@ -47,8 +59,8 @@ seeds:
       +schema: "SEEDS"
       +tags: ['cert']
       +alias: persona_dbt_project_file
-      +pre_hook: "SELECT 'ejecucion dbt project.yml pre_hook' consulta from dual;" #Se ejecuta antes que el yml a nivel de seed y posteriormente a un paquete
-      +post_hook: "SELECT 'ejecucion dbt_project.yml post_hook' consulta from dual;"
+      #+pre_hook: "SELECT 'ejecucion dbt project.yml pre_hook' consulta from dual;" #Se ejecuta antes que el yml a nivel de seed y posteriormente a un paquete
+      #+post_hook: "SELECT 'ejecucion dbt_project.yml post_hook' consulta from dual;"
   
 #Configuraciones de SOURCES
 sources:

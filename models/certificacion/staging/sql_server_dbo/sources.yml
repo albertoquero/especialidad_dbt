@@ -12,7 +12,7 @@ sources:
         error_after: {count: 24, period: hour}
       loaded_at_field: _FIVETRAN_SYNCED # changed to config in v1.10
     tables:
-      - name: adresses
+      - name: addresses
       - name: events
       - name: orders
       - name: order_items
@@ -20,10 +20,27 @@ sources:
       - name: promos
       - name: users
         #description:
-        #columns:
-        #  - name: 
-        #    description:
-        #    data_tests:
+        columns:
+          - name: user_id
+          - name: updated_up
+          - name: address_id
+          - name: last_name
+          - name: created_at
+          - name: phone_number
+          - name: total_orders
+          - name: first_name
+          - name: email
+            description: Campo email
+            data_tests:
+              - unique
+              - not_null
+              - validate_email:
+                  description: Test genérico creado en tests/generic. Descripcion en el source.
+              - validate_email_macro_generic
+
+                  
+          - name: _fivetran_synced
+            
         config:
           freshness: # make this a little more strict
             warn_after: {count: 6, period: hour}
