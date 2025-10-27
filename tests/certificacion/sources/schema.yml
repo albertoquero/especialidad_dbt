@@ -1,0 +1,8 @@
+#Fichero que contiene configuraciones relacionadas con los test singulares
+
+data_tests:
+  - name: test_source_valores_positivos
+    description: >
+      Test encargado de validar que los valores del campo quantity son positivos.
+
+    

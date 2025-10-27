@@ -1,0 +1,10 @@
+macros:
+  - name: test_validate_email 
+    description: Test generico creado dentro del dir tests/generic
+    arguments:
+    - name: model 
+      type: string
+      description: Nombre del modelo
+    - name: column_name
+      type: string
+      description: Columna nombre

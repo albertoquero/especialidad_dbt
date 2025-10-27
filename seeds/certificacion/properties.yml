@@ -1,6 +1,5 @@
 version: 2
 
-# Las configuraciones del properties.yml tienen preferencia antes que el dbt_project
 seeds:
   - name: personas_cert
     description: CSV preparacion certificacion PRUEBA WAREHOUSE
@@ -34,8 +33,8 @@ seeds:
       #Propiedades comunes
       enabled: true
       alias: personas_properties_file
-      pre_hook: "SELECT 'ejecucion properties.yml pre_hook' consulta from dual;"
-      post_hook: "SELECT 'ejecucion properties.yml post_hook' consulta from dual;"
+      #pre_hook: "SELECT 'ejecucion properties.yml pre_hook' consulta from dual;"
+      #post_hook: "SELECT 'ejecucion properties.yml post_hook' consulta from dual;"
       #database: "{{ env_var('DBT_DB_USER') }}_CERT_{{ env_var('DBT_ENVIRONMENTS_LAYER') }}_BRONZE_DB"   Este valor se coge antes que dbt_project
       #schema: <string>  Este valor se coge antes que dbt_project
       persist_docs:   #persiste información en el warehouse

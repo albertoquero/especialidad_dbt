@@ -5,6 +5,7 @@
       unique_key='order_id',
       strategy='timestamp',
       updated_at='_fivetran_synced',
+      target_schema='snapshots',
     )
 }}
 

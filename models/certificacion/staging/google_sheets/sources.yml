@@ -25,10 +25,10 @@ sources:
         columns:
           - name: _ROW
             description: Id de fila
-            data_tests:
+            data_tests:  #Este campo es la PK se pone unique y not null
               - not_null
               - unique
-          - name: QUANTITY
+          - name: QUANTITY  #Se va a crear un test para que la cantidad siempre sea positiva
           - name: MONTH
           - name: PRODUCT_ID
           - name: _FIVETRAN_SYNCED
